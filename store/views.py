@@ -1,12 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 
-def categories(request):
-    return {
-        'categories' : Category.objects.all()
-    }
+# categories view: is context processors so it is available in any page ?(for navbar)
 
-def all_products(request):
+def product_all(request):
     products = Product.objects.all()
     return render(request, 'store/home.html', {'products':products})
 
