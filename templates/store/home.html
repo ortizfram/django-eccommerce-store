@@ -1,11 +1,10 @@
 {% extends "./base.html" %}
 {% load static %}
-{% block title %}Home{% endblock %}
+{% block title %}Store | Home{% endblock %}
 
 {% block content %}
-<h1>Hello From HOME</h1>
 
-<section class="row g-md-5 pb-md-5 mb-5 align-items-center ">
+<section class="row g-md-5 pb-md-5 mb-5 align-items-center justify-content-center mx-auto">
     <div class="col-lg-8 mb-5">
       <div class="masthead-followup-icon d-inline-block mb-3" style="--bg-rgb: var(--bd-pink-rgb);">
         <svg class="bi fs-1"><use xlink:href="#braces"></use></svg>
@@ -32,6 +31,7 @@
             {% for product in products %}
 
             <div class="col">
+              <a href="{{ product.get_absolute_url }}">
                 <img class="img-fluid" src="{{ product.image.url }}" alt="Responsive image">
                 <div class="card-body">
                     <p class="card-text">
@@ -41,6 +41,7 @@
                         <small class="text-muted">9min read</small>
                     </div>
                 </div>
+              </a>
             </div>
 
             {% endfor %}
