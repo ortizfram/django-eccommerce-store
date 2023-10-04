@@ -13,13 +13,20 @@ class Basket():
             basket = self.session['skey'] = {}
         self.basket = basket
 
-    def add(self, product):
+    def add(self, product, qty):
         """
         Adding and updating the users basket session data
         """
         product_id = product.id
 
         if product_id not in self.basket:
-            self.basket[product_id] = {'price': str(product.price)}
+            self.basket[product_id] = {'price': str(product.price), 'qty':int(qty)}
+        else:
+            # If the product is already in the basket, update all fields
+            self.basket[product_id].update({
+                'price': str(product.price),
+                'qty': self.basket[product_id]['qty'] + int(qty),
+                # Update other fields here...
+            })
         
         self.session.modified = True
