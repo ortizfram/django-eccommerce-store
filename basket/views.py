@@ -13,8 +13,8 @@ def basket_summary(request):
 def basket_add(request):
     basket = Basket(request)
     if request.POST.get("action") == "post":
-        product_id = int(request.POST.get("productid"))
-        product_qty = int(
+        product_id = str(request.POST.get("productid"))
+        product_qty = str(
             request.POST.get("productqty")
         )  # from frontendt script request, send to back
         product = get_object_or_404(Product, id=product_id)
@@ -28,8 +28,8 @@ def basket_add(request):
 def basket_delete(request):
     basket = Basket(request)
     if request.POST.get("action") == "post":
-        product_id = int(request.POST.get("productid"))
-        product_qty = int(
+        product_id = str(request.POST.get("productid"))
+        product_qty = str(
             request.POST.get("productqty")
         )  # from frontendt script request, send to back
         product = get_object_or_404(Product, id=product_id)
