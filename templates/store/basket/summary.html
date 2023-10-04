@@ -28,7 +28,7 @@
                                 <div class="row p-3">
                                     <div class="col-6">
                                         <label for="select">Qty</label>
-                                        <select id="select">
+                                        <select id="select{{product.id}}">
                                             <option selected>
                                                 {{item.qty}}
                                             </option>
@@ -39,7 +39,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <button id="add-button" value="{{product.id}}" type="button" class="btn btn-secondary btn-sm">Update
+                                        <button id="update-button" data-index="{{product.id}}" type="button" class="btn btn-secondary btn-sm update-button">Update
                                         </button>
                                         <button id="delete-button" data-index="{{product.id}}" type="button" class="btn btn-secondary btn-sm delete-button">Delete
                                         </button>
@@ -59,6 +59,7 @@
 
 
 <script>
+    // Delete item
     $(document).on('click', '.delete-button', function (e) {
         e.preventDefault();
         var prodid = $(this).data('index')
@@ -67,6 +68,27 @@
             url: "{% url 'basket:basket_delete' %}",
             data: {
                 productid: $(this).data('index'), //using class instead of id
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function (json) {
+                console.log(prodid)
+                $('.product-item[data-index="'+ prodid +'"]').remove();
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    })
+
+    // update item
+    $(document).on('click', '.update-button', function (e) {
+        e.preventDefault();
+        var prodid = $(this).data('index')
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'basket:basket_delete' %}",
+            data: {
+                productid: $(this).data('index'), //using class instead of id
+                productqty: $('#select'+ prodid +' option:selected').text(),
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'post'
             },

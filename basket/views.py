@@ -39,3 +39,17 @@ def basket_delete(request):
         response = JsonResponse({"qty": basketqty})  # no need to decoded() skey
 
         return response
+
+def basket_update(request):
+    basket = Basket(request)
+    if request.POST.get("action") == "post":
+        product_id = str(request.POST.get("productid"))
+        product_qty = str(
+            request.POST.get("productqty")
+        )  # from frontendt script request, send to back
+
+        print(product_id)
+        print(product_qty)
+
+        response = JsonResponse({"Success": True}) 
+        return response
