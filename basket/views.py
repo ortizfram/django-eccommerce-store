@@ -15,6 +15,8 @@ def basket_add(request):
         product_qty = int(request.POST.get('productqty')) # from frontendt script request, send to back
         product = get_object_or_404(Product, id=product_id)
         basket.add(product=product, qty=product_qty)
-        response = JsonResponse({'qty': product_qty}) # no need to decoded() skey
+        
+        basketqty = basket.__len__()
+        response = JsonResponse({'qty': basketqty}) # no need to decoded() skey
 
         return response

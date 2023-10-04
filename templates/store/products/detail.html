@@ -58,7 +58,6 @@
                 action: 'post'
             },
             success: function (json) {
-                //console.log(json) // return response from views "add"
                 document.getElementById("basket-qty").innerHTML = json.qty
             },
             error: function (xhr, errmsg, err) {}
