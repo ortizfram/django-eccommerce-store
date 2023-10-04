@@ -3,7 +3,6 @@ from django.http import JsonResponse
 from store.models import Product
 
 from .basket import Basket
-from decimal import Decimal 
 
 def basket_summary(request):
     return render(request, 'store/basket/summary.html')
