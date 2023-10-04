@@ -15,12 +15,12 @@
                     </div>
                     <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
                         <h1 class="mb-0 h4">{{ product.title }}</h1>
-                        <p><span class="lead">{{ product.author }}</span> (Author)</p>
+                        {% comment %} <p><span class="lead">{{ product.author }}</span> (Author)</p> {% endcomment %}
                         <p>{{ product.description|slice:":355" }}...</p>
                         <div class="border">
                             <div class="col border-bottom">
                                 <div class="row p-3">
-                                    <div class="col-6">Hardback</div>
+                                    <div class="col-6">total</div>
                                     <div class="col-6 text-end"><span class="h4 fw-bold">£{{ item.total_price }}</span></div>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                     <div class="col-6 text-end">
                                         <button id="add-button" value="{{product.id}}" type="button" class="btn btn-secondary btn-sm">Update
                                         </button>
-                                        <button id="delete-button" value="{{product.id}}" type="button" class="btn btn-secondary btn-sm">Delete
+                                        <button id="delete-button" data-index="{{product.id}}" type="button" class="btn btn-secondary btn-sm delete-button">Delete
                                         </button>
                                     </div>
                                 </div>
@@ -56,5 +56,24 @@
         </div>
     </div>
 </main>
+
+
+<script>
+    $(document).on('click', '.delete-button', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'basket:basket_delete' %}",
+            data: {
+                productid: $(this).data('index'), //using class instead of id
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function (json) {
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    })
+</script>
 
 {% endblock %}
