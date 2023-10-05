@@ -32,12 +32,12 @@ def basket_delete(request):
         product_qty = str(
             request.POST.get("productqty")
         )  # from frontendt script request, send to back
-        product = get_object_or_404(Product, id=product_id)
         basket.delete(product=product_id)
 
         basketqty = basket.__len__()
-        response = JsonResponse({"qty": basketqty})  # no need to decoded() skey
-
+        baskettotal = basket.get_total_price()
+        response = JsonResponse({"qty": basketqty,"subtotal":baskettotal}) 
+        
         return response
 
 def basket_update(request):
@@ -46,10 +46,11 @@ def basket_update(request):
         product_id = str(request.POST.get("productid"))
         product_qty = str(
             request.POST.get("productqty")
-        )  # from frontendt script request, send to back
+        )
+        basket.update(product=product_id, qty=product_qty) 
 
-        print(product_id)
-        print(product_qty)
+        basketqty = basket.__len__()
+        baskettotal = basket.get_total_price()
+        response = JsonResponse({"qty": basketqty,"subtotal":baskettotal}) 
 
-        response = JsonResponse({"Success": True}) 
         return response

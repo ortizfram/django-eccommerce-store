@@ -21,7 +21,7 @@
                             <div class="col border-bottom">
                                 <div class="row p-3">
                                     <div class="col-6">total</div>
-                                    <div class="col-6 text-end"><span class="h4 fw-bold">£{{ item.total_price }}</span></div>
+                                    <div class="col-6 text-end"><span class="h4 fw-bold">£{{ product.price }}</span></div>
                                 </div>
                             </div>
                             <div class="col">
@@ -74,6 +74,8 @@
             success: function (json) {
                 console.log(prodid)
                 $('.product-item[data-index="'+ prodid +'"]').remove();
+                document.getElementById("subtotal").innerHTML = json.subtotal
+                document.getElementById("basket-qty").innerHTML = json.qty
             },
             error: function (xhr, errmsg, err) {}
         });
@@ -85,16 +87,16 @@
         var prodid = $(this).data('index')
         $.ajax({
             type: 'POST',
-            url: "{% url 'basket:basket_delete' %}",
+            url: "{% url 'basket:basket_update' %}",
             data: {
                 productid: $(this).data('index'), //using class instead of id
                 productqty: $('#select'+ prodid +' option:selected').text(),
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'post'
             },
-            success: function (json) {
-                console.log(prodid)
-                $('.product-item[data-index="'+ prodid +'"]').remove();
+            success: function (json) {//return data from the view as json to the template
+                document.getElementById("basket-qty").innerHTML = json.qty
+                document.getElementById("subtotal").innerHTML = json.subtotal
             },
             error: function (xhr, errmsg, err) {}
         });

@@ -27,7 +27,6 @@ class Basket():
             self.basket[product_id].update({
                 'price': str(product.price),
                 'qty': self.basket[product_id]['qty'] + int(qty),
-                # Update other fields here...
             })
         
         self.save()
@@ -46,17 +45,19 @@ class Basket():
 
         for item in basket.values(): 
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['qty']
+            item['total_price'] = Decimal(item['price']) * Decimal(item['qty'])
             yield item
 
     def __len__(self):
         """
         Get the basket data and count qty of items
         """
-        return sum(item['qty'] for item in self.basket.values())
+        return sum(int(item['qty']) for item in self.basket.values())
     
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+        total = sum(Decimal(item['price']) * Decimal(item['qty']) for item in self.basket.values())
+        return '{:.2f}'.format(total)  # Format as a string with 2 decimal places
+
 
     def delete(self, product):
         """
@@ -68,6 +69,17 @@ class Basket():
         if product_id in self.basket:
             del self.basket[product_id]
             self.save()
+
+    def update(self, product, qty):
+        """
+        Update values in session data
+        """
+        product_id = product
+        qty = qty
+
+        if product_id in self.basket:
+            self.basket[product_id]['qty'] = qty
+        self.save()
     
     def save(self):
         self.session.modified = True
